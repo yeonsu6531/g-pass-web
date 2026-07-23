@@ -30,3 +30,17 @@ function backToRoutes() {
   document.getElementById('detail-panel').classList.add('hidden');
   document.getElementById('route-panel').classList.remove('hidden');
 }
+
+// 정류장 메뉴 토글
+function toggleStationMenu() {
+  const menu = document.getElementById('station-menu');
+  menu.classList.toggle('hidden');
+}
+
+// 메뉴 외부 클릭 시 닫기
+document.addEventListener('click', (e) => {
+  const dropdown = document.getElementById('station-dropdown');
+  if (dropdown && !dropdown.contains(e.target)) {
+    document.getElementById('station-menu')?.classList.add('hidden');
+  }
+});
