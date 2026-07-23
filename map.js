@@ -1,5 +1,3 @@
-// ===== 정류장 데이터 =====
-
 // KTX 울산역 정류장
 const STATIONS_KTX = [
   { name: 'KTX울산역(3000, 3100)', lat: 35.55064862, lng: 129.1388408, id: '15413' },
@@ -30,167 +28,86 @@ const STATIONS_CITYTOUR = [
   { name: '시티버스-중앙전통시장', lat: 35.55426224, lng: 129.3236524, id: '90012' },
 ];
 
-// 주요 관광지 인근 정류장
+// 주요 관광지 인근 정류장 (핵심만)
 const STATIONS_TOURIST = [
-  // 태화강국가정원
-  { name: '태화강국가정원 동강병원', lat: 35.55253514, lng: 129.3007721, id: '21210', spot: '태화강국가정원' },
-  { name: '태화강국가정원 로터리', lat: 35.5510717, lng: 129.2997953, id: '21214', spot: '태화강국가정원' },
-  // 대왕암공원
-  { name: '대왕암공원', lat: 35.49007834, lng: 129.4359918, id: '61016', spot: '대왕암공원' },
-  // 장생포고래박물관
-  { name: 'SK에너지앞(고래박물관)', lat: 35.49363454, lng: 129.3809381, id: '23532', spot: '장생포고래박물관' },
-  // 울산대공원
-  { name: '대공원', lat: 35.5318657, lng: 129.2937066, id: '21903', spot: '울산대공원' },
-  // 십리대숲
-  { name: '남구둔치주차장(십리대숲)', lat: 35.54959688, lng: 129.3074188, id: '21220', spot: '십리대숲' },
-  // 반구대암각화
-  { name: '대곡박물관(반구대암각화)', lat: 35.61880551, lng: 129.1683385, id: '30357', spot: '반구대암각화' },
-  { name: '울산암각화박물관', lat: 35.60858511, lng: 129.1700888, id: '30362', spot: '반구대암각화' },
-  // 울산대교전망대
-  { name: '과학대정문(대교전망대)', lat: 35.49787036, lng: 129.4177703, id: '70703', spot: '울산대교전망대' },
-  // 간절곶
-  { name: '간절곶', lat: 35.35942564, lng: 129.3552643, id: '23313', spot: '간절곶' },
-  // 태화강역
-  { name: '태화강역(1번 정류소)', lat: 35.53964151, lng: 129.3535299, id: '12313', spot: '태화강역' },
-  { name: '태화강역(2번 정류소)', lat: 35.53891628, lng: 129.3530622, id: '12314', spot: '태화강역' },
-  { name: '태화강역광장', lat: 35.54169668, lng: 129.3533893, id: '12310', spot: '태화강역' },
+  { name: '태화강국가정원 동강병원', lat: 35.55253514, lng: 129.3007721, id: '21210', spot: '🌿 태화강국가정원' },
+  { name: '태화강국가정원 로터리', lat: 35.5510717, lng: 129.2997953, id: '21214', spot: '🌿 태화강국가정원' },
+  { name: '대왕암공원', lat: 35.49007834, lng: 129.4359918, id: '61016', spot: '🌊 대왕암공원' },
+  { name: 'SK에너지앞(고래박물관 하차)', lat: 35.49363454, lng: 129.3809381, id: '23532', spot: '🐋 장생포고래박물관' },
+  { name: '대공원', lat: 35.5318657, lng: 129.2937066, id: '21903', spot: '🏞 울산대공원' },
+  { name: '남구둔치주차장(십리대숲)', lat: 35.54959688, lng: 129.3074188, id: '21220', spot: '🎋 십리대숲' },
+  { name: '대곡박물관(반구대암각화)', lat: 35.61880551, lng: 129.1683385, id: '30357', spot: '🪨 반구대암각화' },
+  { name: '울산암각화박물관', lat: 35.60858511, lng: 129.1700888, id: '30362', spot: '🪨 반구대암각화' },
+  { name: '과학대정문(울산대교전망대)', lat: 35.49787036, lng: 129.4177703, id: '70703', spot: '🌉 울산대교전망대' },
+  { name: '간절곶', lat: 35.35942564, lng: 129.3552643, id: '23313', spot: '🌅 간절곶' },
+  { name: '태화강역(1번 정류소)', lat: 35.53964151, lng: 129.3535299, id: '12313', spot: '🚉 태화강역' },
+  { name: '태화강역(2번 정류소)', lat: 35.53891628, lng: 129.3530622, id: '12314', spot: '🚉 태화강역' },
+  { name: '태화강역광장', lat: 35.54169668, lng: 129.3533893, id: '12310', spot: '🚉 태화강역' },
 ];
 
-// ===== 마커 색상 =====
 const COLORS = {
-  ktx:      { bg: '#E85D24', label: '🚆 KTX' },
-  citytour: { bg: '#3B82F6', label: '🚌 시티투어' },
-  tourist:  { bg: '#10B981', label: '📍 관광지' },
-  all:      { bg: '#6B7280', label: '🚏 전체' },
+  ktx:      '#E85D24',
+  citytour: '#3B82F6',
+  tourist:  '#10B981',
 };
 
 let map;
 let activeMarkers = [];
-let allStationMarkers = [];
-let allStationsVisible = false;
 
-kakao.maps.load(() => {
-  const container = document.getElementById('map');
-  map = new kakao.maps.Map(container, {
+kakao.maps.load(function() {
+  map = new kakao.maps.Map(document.getElementById('map'), {
     center: new kakao.maps.LatLng(35.5506, 129.1389),
     level: 9,
   });
 });
 
-// ===== 카테고리별 정류장 표시 =====
 function toggleCategory(type) {
-  // 같은 버튼 다시 누르면 끄기
-  const btn = document.getElementById(`btn-cat-${type}`);
-  const isActive = btn.classList.contains('active');
-
-  if (isActive) {
-    clearMarkers();
-    btn.classList.remove('active');
-    return;
-  }
+  var btn = document.getElementById('btn-cat-' + type);
+  var isActive = btn.classList.contains('active');
 
   clearMarkers();
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.cat-btn').forEach(function(b) { b.classList.remove('active'); });
+
+  if (isActive) return; // 같은 버튼 누르면 끄기
   btn.classList.add('active');
 
-  let data = [];
-  if (type === 'ktx') data = STATIONS_KTX;
-  else if (type === 'citytour') data = STATIONS_CITYTOUR;
-  else if (type === 'tourist') data = STATIONS_TOURIST;
-  else if (type === 'all') {
-    // 전체 정류장 → 클러스터러로 묶어서 표시 (렉 방지)
-    const markers = ALL_STATIONS.map(s => {
-      const marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(s.lat, s.lng),
-        title: s.name,
-      });
-      const iw = new kakao.maps.InfoWindow({
-        content: `<div style="padding:6px 10px;font-size:12px;font-weight:600">${s.name}<br><span style="color:#888;font-size:11px">번호: ${s.id}</span></div>`
-      });
-      kakao.maps.event.addListener(marker, 'click', () => iw.open(map, marker));
-      allStationMarkers.push(marker);
-      return marker;
-    });
+  var data = type === 'ktx' ? STATIONS_KTX : type === 'citytour' ? STATIONS_CITYTOUR : STATIONS_TOURIST;
+  var color = COLORS[type];
 
-    const clusterer = new kakao.maps.MarkerClusterer({
-      map,
-      averageCenter: true,
-      minLevel: 5,
-      disableClickZoom: false,
-      styles: [{
-        width: '40px', height: '40px',
-        background: 'rgba(107,114,128,0.85)',
-        borderRadius: '50%',
-        color: '#fff',
-        textAlign: 'center',
-        fontWeight: '700',
-        lineHeight: '40px',
-        fontSize: '13px',
-      }],
-    });
-    clusterer.addMarkers(markers);
-    allStationMarkers.push(clusterer);
-    map.setLevel(8);
-    return;
-  }
-
-  data.forEach(s => {
-    const color = COLORS[type].bg;
-    const spotLabel = s.spot ? `<br><span style="color:rgba(255,255,255,0.8);font-size:10px">${s.spot}</span>` : '';
-    const content = `
-      <div style="
-        background:${color};
-        color:white;
-        padding:5px 10px;
-        border-radius:14px;
-        font-size:12px;
-        font-weight:700;
-        white-space:nowrap;
-        box-shadow:0 2px 8px rgba(0,0,0,0.3);
-        cursor:pointer;
-        line-height:1.4;
-      ">${s.name}${spotLabel}</div>
-    `;
-    const overlay = new kakao.maps.CustomOverlay({
-      map,
+  data.forEach(function(s) {
+    var spotLine = s.spot ? '<br><span style="color:rgba(255,255,255,0.85);font-size:10px">' + s.spot + '</span>' : '';
+    var content = '<div style="background:' + color + ';color:white;padding:5px 10px;border-radius:14px;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.25);line-height:1.5">' + s.name + spotLine + '</div>';
+    var overlay = new kakao.maps.CustomOverlay({
+      map: map,
       position: new kakao.maps.LatLng(s.lat, s.lng),
-      content,
-      yAnchor: 1.3,
+      content: content,
+      yAnchor: 1.4,
     });
     activeMarkers.push(overlay);
   });
 
   // 지도 범위 자동 조정
-  if (data.length > 0) {
-    if (type === 'ktx') {
-      map.setCenter(new kakao.maps.LatLng(35.5511, 129.1389));
-      map.setLevel(4);
-    } else {
-      const bounds = new kakao.maps.LatLngBounds();
-      data.forEach(s => bounds.extend(new kakao.maps.LatLng(s.lat, s.lng)));
-      map.setBounds(bounds);
-    }
+  if (type === 'ktx') {
+    map.setCenter(new kakao.maps.LatLng(35.5511, 129.1389));
+    map.setLevel(4);
+  } else {
+    var bounds = new kakao.maps.LatLngBounds();
+    data.forEach(function(s) { bounds.extend(new kakao.maps.LatLng(s.lat, s.lng)); });
+    map.setBounds(bounds);
   }
 }
 
 function clearMarkers() {
-  activeMarkers.forEach(m => m.setMap(null));
+  activeMarkers.forEach(function(m) { m.setMap(null); });
   activeMarkers = [];
-  allStationMarkers.forEach(m => {
-    if (m.setMap) m.setMap(null);       // 일반 마커
-    else if (m.clear) m.clear();         // 클러스터러
-  });
-  allStationMarkers = [];
 }
 
-// 경로 선 그리기
 function drawRoute(coords) {
   new kakao.maps.Polyline({
-    map,
-    path: coords.map(c => new kakao.maps.LatLng(c.lat, c.lng)),
+    map: map,
+    path: coords.map(function(c) { return new kakao.maps.LatLng(c.lat, c.lng); }),
     strokeWeight: 4,
     strokeColor: '#3B82F6',
     strokeOpacity: 0.8,
-    strokeStyle: 'solid',
-  }).setMap(map);
+  });
 }

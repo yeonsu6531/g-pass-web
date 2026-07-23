@@ -8,24 +8,20 @@
 </head>
 <body>
 
-  <!-- 상단 버튼 바 -->
   <div id="top-bar">
     <div id="station-dropdown">
-      <button id="btn-stations-main" onclick="toggleStationMenu(event)">🚏 정류장 보기 ▾</button>
+      <button id="btn-stations-main">🚏 정류장 보기 ▾</button>
       <div id="station-menu" class="hidden">
-        <button class="cat-btn" id="btn-cat-ktx" onclick="toggleCategory('ktx')">🚆 KTX 울산역</button>
-        <button class="cat-btn" id="btn-cat-citytour" onclick="toggleCategory('citytour')">🚌 시티투어</button>
-        <button class="cat-btn" id="btn-cat-tourist" onclick="toggleCategory('tourist')">📍 관광지 인근</button>
-        <button class="cat-btn" id="btn-cat-all" onclick="toggleCategory('all')">🗺 전체 정류장</button>
+        <button class="cat-btn" id="btn-cat-ktx">🚆 KTX 울산역</button>
+        <button class="cat-btn" id="btn-cat-citytour">🚌 시티투어</button>
+        <button class="cat-btn" id="btn-cat-tourist">📍 관광지 인근</button>
       </div>
     </div>
     <button id="btn-route" onclick="showRoutePanel()">🗺 경로 설정</button>
   </div>
 
-  <!-- 지도 -->
   <div id="map"></div>
 
-  <!-- 경로 설정 패널 -->
   <div id="route-panel" class="hidden">
     <div id="panel-header">
       <span>경로 설정</span>
@@ -45,7 +41,6 @@
     <div id="route-results" class="hidden"></div>
   </div>
 
-  <!-- 경로 상세 패널 -->
   <div id="detail-panel" class="hidden">
     <div id="panel-header">
       <button onclick="backToRoutes()">← 뒤로</button>
@@ -63,19 +58,35 @@
   <script src="ui.js"></script>
 
   <script>
-    // 드롭다운 토글
-    function toggleStationMenu(e) {
-      e.stopPropagation();
-      const menu = document.getElementById('station-menu');
-      menu.classList.toggle('hidden');
-    }
+    // 드롭다운 - onclick 대신 addEventListener로 완전히 분리
+    var mainBtn = document.getElementById('btn-stations-main');
+    var menu = document.getElementById('station-menu');
 
-    // 외부 클릭 시 메뉴 닫기
-    document.addEventListener('click', function(e) {
-      const dropdown = document.getElementById('station-dropdown');
-      if (!dropdown.contains(e.target)) {
-        document.getElementById('station-menu').classList.add('hidden');
-      }
+    mainBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      menu.classList.toggle('hidden');
+    });
+
+    document.getElementById('btn-cat-ktx').addEventListener('click', function(e) {
+      e.stopPropagation();
+      menu.classList.add('hidden');
+      toggleCategory('ktx');
+    });
+
+    document.getElementById('btn-cat-citytour').addEventListener('click', function(e) {
+      e.stopPropagation();
+      menu.classList.add('hidden');
+      toggleCategory('citytour');
+    });
+
+    document.getElementById('btn-cat-tourist').addEventListener('click', function(e) {
+      e.stopPropagation();
+      menu.classList.add('hidden');
+      toggleCategory('tourist');
+    });
+
+    document.body.addEventListener('click', function() {
+      menu.classList.add('hidden');
     });
   </script>
 </body>
