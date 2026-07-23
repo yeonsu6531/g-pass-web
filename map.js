@@ -98,10 +98,9 @@ function toggleCategory(type) {
   else if (type === 'citytour') data = STATIONS_CITYTOUR;
   else if (type === 'tourist') data = STATIONS_TOURIST;
   else if (type === 'all') {
-    // 전체는 ALL_STATIONS (stations.js)
-    ALL_STATIONS.forEach(s => {
+    // 전체 정류장 → 클러스터러로 묶어서 표시 (렉 방지)
+    const markers = ALL_STATIONS.map(s => {
       const marker = new kakao.maps.Marker({
-        map,
         position: new kakao.maps.LatLng(s.lat, s.lng),
         title: s.name,
       });
@@ -110,7 +109,27 @@ function toggleCategory(type) {
       });
       kakao.maps.event.addListener(marker, 'click', () => iw.open(map, marker));
       allStationMarkers.push(marker);
+      return marker;
     });
+
+    const clusterer = new kakao.maps.MarkerClusterer({
+      map,
+      averageCenter: true,
+      minLevel: 5,
+      disableClickZoom: false,
+      styles: [{
+        width: '40px', height: '40px',
+        background: 'rgba(107,114,128,0.85)',
+        borderRadius: '50%',
+        color: '#fff',
+        textAlign: 'center',
+        fontWeight: '700',
+        lineHeight: '40px',
+        fontSize: '13px',
+      }],
+    });
+    clusterer.addMarkers(markers);
+    allStationMarkers.push(clusterer);
     map.setLevel(8);
     return;
   }
@@ -157,7 +176,10 @@ function toggleCategory(type) {
 function clearMarkers() {
   activeMarkers.forEach(m => m.setMap(null));
   activeMarkers = [];
-  allStationMarkers.forEach(m => m.setMap(null));
+  allStationMarkers.forEach(m => {
+    if (m.setMap) m.setMap(null);       // 일반 마커
+    else if (m.clear) m.clear();         // 클러스터러
+  });
   allStationMarkers = [];
 }
 
