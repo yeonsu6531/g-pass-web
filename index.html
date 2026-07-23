@@ -8,13 +8,16 @@
 </head>
 <body>
 
+  <!-- 드롭다운 닫기용 투명 오버레이 -->
+  <div id="overlay" class="hidden" onclick="closeMenu()"></div>
+
   <div id="top-bar">
     <div id="station-dropdown">
-      <button id="btn-stations-main">🚏 정류장 보기 ▾</button>
+      <button id="btn-stations-main" onclick="openMenu()">🚏 정류장 보기 ▾</button>
       <div id="station-menu" class="hidden">
-        <button class="cat-btn" id="btn-cat-ktx">🚆 KTX 울산역</button>
-        <button class="cat-btn" id="btn-cat-citytour">🚌 시티투어</button>
-        <button class="cat-btn" id="btn-cat-tourist">📍 관광지 인근</button>
+        <button class="cat-btn" id="btn-cat-ktx" onclick="closeMenu(); toggleCategory('ktx')">🚆 KTX 울산역</button>
+        <button class="cat-btn" id="btn-cat-citytour" onclick="closeMenu(); toggleCategory('citytour')">🚌 시티투어</button>
+        <button class="cat-btn" id="btn-cat-tourist" onclick="closeMenu(); toggleCategory('tourist')">📍 관광지 인근</button>
       </div>
     </div>
     <button id="btn-route" onclick="showRoutePanel()">🗺 경로 설정</button>
@@ -58,36 +61,14 @@
   <script src="ui.js"></script>
 
   <script>
-    // 드롭다운 - onclick 대신 addEventListener로 완전히 분리
-    var mainBtn = document.getElementById('btn-stations-main');
-    var menu = document.getElementById('station-menu');
-
-    mainBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      menu.classList.toggle('hidden');
-    });
-
-    document.getElementById('btn-cat-ktx').addEventListener('click', function(e) {
-      e.stopPropagation();
-      menu.classList.add('hidden');
-      toggleCategory('ktx');
-    });
-
-    document.getElementById('btn-cat-citytour').addEventListener('click', function(e) {
-      e.stopPropagation();
-      menu.classList.add('hidden');
-      toggleCategory('citytour');
-    });
-
-    document.getElementById('btn-cat-tourist').addEventListener('click', function(e) {
-      e.stopPropagation();
-      menu.classList.add('hidden');
-      toggleCategory('tourist');
-    });
-
-    document.body.addEventListener('click', function() {
-      menu.classList.add('hidden');
-    });
+    function openMenu() {
+      document.getElementById('station-menu').classList.remove('hidden');
+      document.getElementById('overlay').classList.remove('hidden');
+    }
+    function closeMenu() {
+      document.getElementById('station-menu').classList.add('hidden');
+      document.getElementById('overlay').classList.add('hidden');
+    }
   </script>
 </body>
 </html>

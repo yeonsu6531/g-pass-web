@@ -184,3 +184,11 @@ body { font-family: 'Apple SD Gothic Neo', sans-serif; }
   background: #EFF6FF;
   color: #2563EB;
 }
+
+/* 드롭다운 닫기용 투명 오버레이 */
+#overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 99;
+}
