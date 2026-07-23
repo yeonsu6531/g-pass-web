@@ -1,20 +1,11 @@
-// 항상 표시되는 고정 정류장 (울산역 + 태화강역)
+// 항상 표시되는 고정 정류장
 const STATIONS_FIXED = [
   { name: 'KTX 울산역', lat: 35.55064862, lng: 129.1388408, id: '15413', color: '#E85D24' },
   { name: '울산역(시내방면)', lat: 35.55161809, lng: 129.1389054, id: '15414', color: '#E85D24' },
   { name: '울산역(언양방면)', lat: 35.55172615, lng: 129.1389094, id: '15429', color: '#E85D24' },
-  { name: '태화강역(1번 정류소)', lat: 35.53964151, lng: 129.3535299, id: '12313', color: '#8B5CF6' },
-  { name: '태화강역(2번 정류소)', lat: 35.53891628, lng: 129.3530622, id: '12314', color: '#8B5CF6' },
+  { name: '태화강역(1번)', lat: 35.53964151, lng: 129.3535299, id: '12313', color: '#8B5CF6' },
+  { name: '태화강역(2번)', lat: 35.53891628, lng: 129.3530622, id: '12314', color: '#8B5CF6' },
   { name: '태화강역광장', lat: 35.54169668, lng: 129.3533893, id: '12310', color: '#8B5CF6' },
-];
-
-// KTX 울산역 근처 추가 정류장
-const STATIONS_KTX = [
-  { name: 'KTX 울산역', lat: 35.55064862, lng: 129.1388408, id: '15413' },
-  { name: '울산역(시내방면)', lat: 35.55161809, lng: 129.1389054, id: '15414' },
-  { name: '울산역(언양방면)', lat: 35.55172615, lng: 129.1389094, id: '15429' },
-  { name: '울산역(종점)', lat: 35.55119682, lng: 129.1388802, id: '15415' },
-  { name: '울산역(343 삼남방면)', lat: 35.55167461, lng: 129.1389122, id: '15419' },
 ];
 
 // 시티투어 정류장
@@ -35,8 +26,11 @@ const STATIONS_CITYTOUR = [
   { name: '시티버스-중앙전통시장', lat: 35.55426224, lng: 129.3236524, id: '90012' },
 ];
 
-// 관광지 인근 정류장
+// 관광지투어 정류장 (KTX 울산역 포함)
 const STATIONS_TOURIST = [
+  { name: 'KTX 울산역', lat: 35.55064862, lng: 129.1388408, id: '15413', spot: '🚆 KTX 울산역' },
+  { name: '울산역(시내방면)', lat: 35.55161809, lng: 129.1389054, id: '15414', spot: '🚆 KTX 울산역' },
+  { name: '울산역(언양방면)', lat: 35.55172615, lng: 129.1389094, id: '15429', spot: '🚆 KTX 울산역' },
   { name: '태화강국가정원 동강병원', lat: 35.55253514, lng: 129.3007721, id: '21210', spot: '🌿 태화강국가정원' },
   { name: '태화강국가정원 로터리', lat: 35.5510717, lng: 129.2997953, id: '21214', spot: '🌿 태화강국가정원' },
   { name: '대왕암공원', lat: 35.49007834, lng: 129.4359918, id: '61016', spot: '🌊 대왕암공원' },
@@ -48,7 +42,7 @@ const STATIONS_TOURIST = [
   { name: '간절곶', lat: 35.35942564, lng: 129.3552643, id: '23313', spot: '🌅 간절곶' },
 ];
 
-const COLORS = { ktx: '#E85D24', citytour: '#3B82F6', tourist: '#10B981' };
+const COLORS = { citytour: '#3B82F6', tourist: '#10B981' };
 
 let map;
 let fixedMarkers = [];
@@ -56,28 +50,29 @@ let activeMarkers = [];
 
 kakao.maps.load(function() {
   map = new kakao.maps.Map(document.getElementById('map'), {
-    center: new kakao.maps.LatLng(35.5506, 129.2800),
+    center: new kakao.maps.LatLng(35.5200, 129.2800),
     level: 9,
   });
-  // 지도 로드 후 고정 정류장 표시
   showFixedStations();
+
+  // 지도 클릭 시 드롭다운 닫기
+  kakao.maps.event.addListener(map, 'click', function() {
+    document.getElementById('station-details').removeAttribute('open');
+  });
 });
 
-// 항상 표시: 울산역 + 태화강역
 function showFixedStations() {
   STATIONS_FIXED.forEach(function(s) {
     var content = '<div style="background:' + s.color + ';color:white;padding:5px 10px;border-radius:14px;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.25)">' + s.name + '</div>';
-    var overlay = new kakao.maps.CustomOverlay({
+    fixedMarkers.push(new kakao.maps.CustomOverlay({
       map: map,
       position: new kakao.maps.LatLng(s.lat, s.lng),
       content: content,
       yAnchor: 1.4,
-    });
-    fixedMarkers.push(overlay);
+    }));
   });
 }
 
-// 카테고리 토글
 function toggleCategory(type) {
   var btn = document.getElementById('btn-cat-' + type);
   var isActive = btn.classList.contains('active');
@@ -88,29 +83,23 @@ function toggleCategory(type) {
   if (isActive) return;
   btn.classList.add('active');
 
-  var data = type === 'ktx' ? STATIONS_KTX : type === 'citytour' ? STATIONS_CITYTOUR : STATIONS_TOURIST;
+  var data = type === 'citytour' ? STATIONS_CITYTOUR : STATIONS_TOURIST;
   var color = COLORS[type];
 
   data.forEach(function(s) {
     var spotLine = s.spot ? '<br><span style="color:rgba(255,255,255,0.85);font-size:10px">' + s.spot + '</span>' : '';
     var content = '<div style="background:' + color + ';color:white;padding:5px 10px;border-radius:14px;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.25);line-height:1.5">' + s.name + spotLine + '</div>';
-    var overlay = new kakao.maps.CustomOverlay({
+    activeMarkers.push(new kakao.maps.CustomOverlay({
       map: map,
       position: new kakao.maps.LatLng(s.lat, s.lng),
       content: content,
       yAnchor: 1.4,
-    });
-    activeMarkers.push(overlay);
+    }));
   });
 
-  if (type === 'ktx') {
-    map.setCenter(new kakao.maps.LatLng(35.5511, 129.1389));
-    map.setLevel(4);
-  } else {
-    var bounds = new kakao.maps.LatLngBounds();
-    data.forEach(function(s) { bounds.extend(new kakao.maps.LatLng(s.lat, s.lng)); });
-    map.setBounds(bounds);
-  }
+  var bounds = new kakao.maps.LatLngBounds();
+  data.forEach(function(s) { bounds.extend(new kakao.maps.LatLng(s.lat, s.lng)); });
+  map.setBounds(bounds);
 }
 
 function clearActiveMarkers() {

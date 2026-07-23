@@ -8,18 +8,14 @@
 </head>
 <body>
 
-  <!-- 드롭다운 닫기용 투명 오버레이 -->
-  <div id="overlay" class="hidden" onclick="closeMenu()"></div>
-
   <div id="top-bar">
-    <div id="station-dropdown">
-      <button id="btn-stations-main" onclick="openMenu()">🚏 정류장 보기 ▾</button>
-      <div id="station-menu" class="hidden">
-        <button class="cat-btn" id="btn-cat-ktx" onclick="closeMenu(); toggleCategory('ktx')">🚆 KTX 울산역</button>
-        <button class="cat-btn" id="btn-cat-citytour" onclick="closeMenu(); toggleCategory('citytour')">🚌 시티투어</button>
-        <button class="cat-btn" id="btn-cat-tourist" onclick="closeMenu(); toggleCategory('tourist')">📍 관광지 인근</button>
+    <details id="station-details">
+      <summary>🚏 정류장 보기 ▾</summary>
+      <div id="station-menu">
+        <button class="cat-btn" id="btn-cat-citytour" onclick="toggleCategory('citytour')">🚌 시티투어</button>
+        <button class="cat-btn" id="btn-cat-tourist" onclick="toggleCategory('tourist')">📍 관광지투어</button>
       </div>
-    </div>
+    </details>
     <button id="btn-route" onclick="showRoutePanel()">🗺 경로 설정</button>
   </div>
 
@@ -61,14 +57,20 @@
   <script src="ui.js"></script>
 
   <script>
-    function openMenu() {
-      document.getElementById('station-menu').classList.remove('hidden');
-      document.getElementById('overlay').classList.remove('hidden');
-    }
-    function closeMenu() {
-      document.getElementById('station-menu').classList.add('hidden');
-      document.getElementById('overlay').classList.add('hidden');
-    }
+    // 카테고리 버튼 클릭 시 details 닫기
+    document.querySelectorAll('.cat-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.getElementById('station-details').removeAttribute('open');
+      });
+    });
+
+    // 일반 영역 클릭 시 닫기
+    document.addEventListener('click', function(e) {
+      var details = document.getElementById('station-details');
+      if (!details.contains(e.target)) {
+        details.removeAttribute('open');
+      }
+    });
   </script>
 </body>
 </html>
