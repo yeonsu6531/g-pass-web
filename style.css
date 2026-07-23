@@ -1,0 +1,136 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Apple SD Gothic Neo', sans-serif; }
+
+#map {
+  width: 100%;
+  height: 100vh;
+}
+
+#top-bar {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+
+#top-bar button {
+  background: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+#route-panel, #detail-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  z-index: 200;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+#panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+#panel-header button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #555;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.label {
+  font-size: 13px;
+  color: #888;
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.input-row input {
+  flex: 1;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.input-row button {
+  background: #3B82F6;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#search-results {
+  list-style: none;
+  margin-top: 8px;
+}
+
+#search-results li {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#search-results li:hover { background: #f8f8f8; }
+#search-results li .place-name { font-weight: 600; }
+#search-results li .place-addr { font-size: 12px; color: #999; margin-top: 2px; }
+
+/* 경로 추천 카드 */
+.route-card {
+  border: 2px solid #e0e0e0;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.route-card:hover { border-color: #3B82F6; }
+.route-card .route-rank { font-size: 12px; color: #3B82F6; font-weight: 700; margin-bottom: 6px; }
+.route-card .route-summary { font-size: 15px; font-weight: 700; }
+.route-card .route-time { font-size: 13px; color: #888; margin-top: 4px; }
+.route-card .route-wait { font-size: 13px; color: #E85D24; margin-top: 2px; }
+
+/* 상세 경로 */
+.step {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.step-icon { font-size: 22px; flex-shrink: 0; }
+.step-info .step-title { font-size: 15px; font-weight: 600; }
+.step-info .step-sub { font-size: 13px; color: #888; margin-top: 3px; }
+.step-info .step-wait { font-size: 13px; color: #E85D24; margin-top: 3px; font-weight: 600; }
+
+.hidden { display: none; }

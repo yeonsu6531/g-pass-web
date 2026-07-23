@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G-Pass 울산</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 상단 버튼 -->
+  <div id="top-bar">
+    <button id="btn-stations" onclick="showStations()">🚏 정류장 보기</button>
+    <button id="btn-route" onclick="showRoutePanel()">🗺 경로 설정</button>
+  </div>
+
+  <!-- 지도 -->
+  <div id="map"></div>
+
+  <!-- 경로 설정 패널 -->
+  <div id="route-panel" class="hidden">
+    <div id="panel-header">
+      <span>경로 설정</span>
+      <button onclick="closeRoutePanel()">✕</button>
+    </div>
+    <div class="input-row">
+      <span class="label">출발</span>
+      <input type="text" id="input-origin" value="현재 위치" readonly>
+      <button onclick="useCurrentLocation()">📍</button>
+    </div>
+    <div class="input-row">
+      <span class="label">도착</span>
+      <input type="text" id="input-dest" placeholder="목적지 검색">
+      <button onclick="searchDest()">🔍</button>
+    </div>
+    <!-- 검색 결과 -->
+    <ul id="search-results"></ul>
+    <!-- 경로 추천 결과 -->
+    <div id="route-results" class="hidden"></div>
+  </div>
+
+  <!-- 경로 상세 패널 -->
+  <div id="detail-panel" class="hidden">
+    <div id="panel-header">
+      <button onclick="backToRoutes()">← 뒤로</button>
+      <span id="detail-title">경로 상세</span>
+    </div>
+    <div id="detail-content"></div>
+  </div>
+
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a0708e9c7e7833093e59a91049ff3288&libraries=services"></script>
+  <script src="map.js"></script>
+  <script src="search.js"></script>
+  <script src="bus.js"></script>
+  <script src="route.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>
