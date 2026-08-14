@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>G-Pass 울산</title>
+  <title>G-Pass 울산 - 지도</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div id="top-bar">
+    <button onclick="location.href='index.html'" style="padding:10px 14px">🏠</button>
     <details id="station-details">
       <summary>🚏 정류장 보기</summary>
       <div id="station-menu">
@@ -57,14 +58,11 @@
   <script src="ui.js"></script>
 
   <script>
-    // 카테고리 버튼 클릭 시 details 닫기
     document.querySelectorAll('.cat-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
         document.getElementById('station-details').removeAttribute('open');
       });
     });
-
-    // 일반 영역 클릭 시 닫기
     document.addEventListener('click', function(e) {
       var details = document.getElementById('station-details');
       if (!details.contains(e.target)) {

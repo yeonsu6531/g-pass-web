@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G-Pass 울산</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      background: linear-gradient(160deg, #e8f5e9 0%, #e3f2fd 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .logo-area { text-align: center; margin-bottom: 48px; }
+    .logo-badge {
+      background: #10B981; color: white;
+      font-size: 13px; font-weight: 700;
+      padding: 4px 12px; border-radius: 20px;
+      display: inline-block; margin-bottom: 12px; letter-spacing: 1px;
+    }
+    .logo-title { font-size: 52px; font-weight: 900; color: #1a1a1a; letter-spacing: -1px; }
+    .logo-title span { color: #10B981; }
+    .logo-sub { font-size: 14px; color: #666; margin-top: 8px; }
+    .btn-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; width: 100%; max-width: 360px;
+    }
+    .main-btn {
+      background: white; border: none; border-radius: 24px;
+      padding: 32px 20px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      text-decoration: none; transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .main-btn:active { transform: scale(0.96); }
+    .btn-icon { font-size: 40px; }
+    .btn-label { font-size: 17px; font-weight: 700; color: #1a1a1a; }
+    .btn-desc { font-size: 11px; color: #999; text-align: center; line-height: 1.5; }
+    .btn-map { border-top: 4px solid #3B82F6; }
+    .btn-mission { border-top: 4px solid #F59E0B; }
+    .nfc-hint { margin-top: 32px; font-size: 12px; color: #bbb; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="logo-area">
+    <div class="logo-badge">2028 울산 정원도시</div>
+    <div class="logo-title">G<span>-</span>Pass</div>
+    <div class="logo-sub">자가용 없이 즐기는 울산 여행 가이드</div>
+  </div>
+  <div class="btn-grid">
+    <a href="map.html" class="main-btn btn-map">
+      <div class="btn-icon">🗺</div>
+      <div class="btn-label">지도</div>
+      <div class="btn-desc">뚜벅이<br>환승 가이드</div>
+    </a>
+    <a href="mission.html" class="main-btn btn-mission">
+      <div class="btn-icon">🎯</div>
+      <div class="btn-label">미션</div>
+      <div class="btn-desc">스탬프 투어<br>포인트 적립</div>
+    </a>
+  </div>
+  <div class="nfc-hint">📱 NFC 태그 시 이 화면으로 연결됩니다</div>
+</body>
+</html>
